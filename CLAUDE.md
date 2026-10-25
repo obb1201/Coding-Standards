@@ -20,6 +20,8 @@ Each language has its own folder, such as `C# Coding Standard/`. A folder uses t
 
 In `JavaScript Coding Standard/`, `references/core-rules.md` (§1–§24) holds the base rules and `references/team-rules.md` (§25 and up) holds the team's additions. A core rule wins over a team rule. Outdated core rules are marked **Retired** instead of deleted, so their numbers stay stable. Never name the outside guide the core rules came from, in any file.
 
+`Security Reviewer/` replaces the synced `security-reviewer` skill (same skill name). `references/owasp-top-10-2025.md` holds the OWASP categories (`[A01]`–`[A10]`). There is one file per stack, with its own stable rule IDs: `csharp.md` (`CS-n`), `dotnet.md` (`NET-n`), `javascript.md` (`JS-n`), `sql.md` (`SQL-n`), `power-platform.md` (`PP-n`), `sharepoint.md` (`SP-n`) and `dynamics-365.md` (`D365-n`, Customer Engagement only). `JS-1`–`JS-6` must match §29.1–§29.6 in the JavaScript standard.
+
 ## Syncing skills to claude.ai
 
 Every skill folder must always be ready to upload. After any change to a skill folder:

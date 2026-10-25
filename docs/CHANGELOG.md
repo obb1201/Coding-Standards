@@ -4,6 +4,16 @@ Notable changes to this repository, newest first.
 
 ## 2026-10-25
 
+- Added `Security Reviewer/`, which replaces the synced `security-reviewer` skill (same name). It now covers C#,
+  .NET, JavaScript, SQL Server / Azure SQL, Power Platform, SharePoint Online and Dynamics 365 CE. It can review
+  code, exported solutions and design descriptions.
+  - `references/owasp-top-10-2025.md` is copied unchanged, so `[A0N]` citations still work.
+  - New stack files with stable rule IDs: `CS-n`, `NET-n`, `JS-n`, `SQL-n`, `PP-n`, `SP-n` and `D365-n`.
+    Findings are cited as `[A0N][STACK-n]`.
+  - First version: each stack rule is one line. Code examples are still to be added.
+  - Team decisions: one skill with a file per stack, D365 Customer Engagement only (not F&O), and SQL Server /
+    Azure SQL only.
+
 - Added `JavaScript Coding Standard/`, which replaces the `javascript-code-reviewer` skill (same name). The old
   skill's `§1`–`§15` numbers no longer apply, so citations in past reviews will not match.
   - `references/core-rules.md`: the base rules, §1.1–§24.1, rewritten in our own words with new examples.

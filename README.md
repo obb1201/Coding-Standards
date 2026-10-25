@@ -8,6 +8,7 @@ The team's coding standards, one set per programming language.
 | --- | --- |
 | C# | [C# Coding Standard](C%23%20Coding%20Standard/SKILL.md) |
 | JavaScript (browser, jQuery) | [JavaScript Coding Standard](JavaScript%20Coding%20Standard/SKILL.md) |
+| Security (C#, .NET, JS, SQL Server, Power Platform, SharePoint, D365 CE) | [Security Reviewer](Security%20Reviewer/SKILL.md) |
 
 Add a row here when you add a new language standard.
 
