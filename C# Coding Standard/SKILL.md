@@ -7,7 +7,7 @@ description: >-
   C# against the standard, and to fix or prevent GitHub Code Scanning (CodeQL) alerts such as
   `cs/linq/missed-where`, `cs/linq/missed-select`, `cs/catch-of-all-exceptions`, and
   `cs/dereferenced-value-may-be-null`. Trigger even when the user doesn't say "coding standard" — any substantive
-  C# writing or review task should follow it.g
+  C# writing or review task should follow it.
 ---
 
 # C# Code Reviewer

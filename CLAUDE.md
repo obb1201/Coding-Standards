@@ -18,6 +18,15 @@ Each language has its own folder, such as `C# Coding Standard/`. A folder uses t
 
 `C# Coding Standard/` is a copy of the synced `csharp-code-reviewer` skill. An edit here does not reach the live skill until it is uploaded again on claude.ai.
 
+## Syncing skills to claude.ai
+
+Every skill folder must always be ready to upload. After any change to a skill folder:
+
+1. Run `powershell -ExecutionPolicy Bypass -File scripts/package-skills.ps1`. It checks the frontmatter and writes `dist/<skill-name>.zip`.
+2. Tell the user the zip path, so they can upload it on claude.ai (Settings → Capabilities → Skills). Do not upload it yourself.
+
+Do not build the zip with Git Bash `tar`. It writes a tar archive with a `.zip` name, and claude.ai rejects it as "Invalid zip file".
+
 ## Related skills
 
 This environment has user-level skills that encode the team's standards: `csharp-code-reviewer` (C#), `javascript-code-reviewer` (browser JS/jQuery) and `security-reviewer` (OWASP Top 10:2025 for C# and JS). When writing or editing a standard for one of those languages, read the matching skill and keep the two consistent. If they disagree, flag it rather than silently picking one.

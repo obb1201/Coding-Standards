@@ -4,6 +4,9 @@ Notable changes to this repository, newest first.
 
 ## 2026-10-25
 
+- Added `scripts/package-skills.ps1`. It builds an upload-ready zip for each skill folder in `dist/` (ignored by git). Documented the sync steps in `README.md` and `CLAUDE.md`.
+- Fixed a typo ("follow it.g") at the end of the `SKILL.md` description.
+
 - Simplified the C# standard's documentation. No rule's meaning changed.
   - `SKILL.md`: rewritten to about half its length. Each override rule is one short bullet with its § number and a short reason. Details such as exception lists and dismissal steps now point to the reference files instead of being repeated. "Read the references" is said once instead of four times. The frontmatter description is shorter.
   - `codeql-checks.md`: plain-English wording for the intro, §2.2 trigger, the EF Core note, and the §2.4 false-positive note.
