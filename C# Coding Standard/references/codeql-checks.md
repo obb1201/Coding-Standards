@@ -1,6 +1,6 @@
 # GitHub Code Scanning (CodeQL) Checks (§2)
 
-These rules address CodeQL alerts raised by the `csharp-security-and-quality` query suite. The goal is to write code that passes the scan cleanly rather than relying on suppressions. Each subsection lists the CodeQL rule ID so a finding can be traced back to the standard. Cite them in reviews by rule ID (e.g. `cs/linq/missed-where`).
+These rules cover alerts from the CodeQL `csharp-security-and-quality` suite. The goal is code that passes the scan without suppressions. Cite each rule in reviews by its rule ID (e.g. `cs/linq/missed-where`).
 
 ## Quick index
 
@@ -19,7 +19,7 @@ These rules address CodeQL alerts raised by the `csharp-security-and-quality` qu
 
 ```csharp
 // Bad — flagged
-foreach (var asset in assets)
+foreach (Asset asset in assets)
 {
     if (!asset.IsActive)
     {
@@ -30,7 +30,7 @@ foreach (var asset in assets)
 }
 
 // Good
-foreach (var asset in assets.Where(a => a.IsActive))
+foreach (Asset asset in assets.Where(activeAsset => activeAsset.IsActive))
 {
     Process(asset);
 }
@@ -38,24 +38,24 @@ foreach (var asset in assets.Where(a => a.IsActive))
 
 ## 2.2 Missed opportunity to use `Select` — `cs/linq/missed-select`
 
-**Triggered by:** a loop whose first action computes a value from the iteration variable, after which the iteration variable itself is never used again. The intent is a transformation, not iteration over the original sequence.
+**Triggered by:** a loop that first computes a value from the loop variable and then never uses the loop variable again. The loop is really transforming the items.
 
 **Rule:** express the transformation with LINQ `Select`.
 
 ```csharp
 // Bad — flagged
-var names = new List<string>();
-foreach (var employee in employees)
+List<string> names = new List<string>();
+foreach (Employee employee in employees)
 {
-    var name = employee.FullName;
+    string name = employee.FullName;
     names.Add(name);
 }
 
 // Good
-var names = employees.Select(e => e.FullName).ToList();
+List<string> names = employees.Select(employee => employee.FullName).ToList();
 ```
 
-> Note for EF Core: applying `Select`/`Where` to an `IQueryable` translates to SQL and runs server-side, which is preferable. Be deliberate about when you call `ToList()` — materialize only after the query is fully composed.
+> Note for EF Core: `Select`/`Where` on an `IQueryable` become SQL and run in the database, which is better. Call `ToList()` only after the query is fully built.
 
 ## 2.3 Generic catch clause — `cs/catch-of-all-exceptions`
 
@@ -91,7 +91,7 @@ catch (DbUpdateException ex)
 }
 ```
 
-**Permitted exception:** the query does not flag a generic catch whose only purpose is to **rethrow** (e.g. logging then `throw;`). If a true catch-all is unavoidable at a top-level boundary (global exception handler, background-service loop), catch `Exception`, log it, and document the justification in `GlobalSuppressions.cs`.
+**Permitted exception:** the query does not flag a generic catch whose only purpose is to **rethrow** (e.g. logging then `throw;`). If a true catch-all is unavoidable at a top-level boundary (global exception handler, background-service loop), catch `Exception`, log it, and dismiss the alert as described in §2.5.
 
 ## 2.4 Dereferenced variable may be null — `cs/dereferenced-value-may-be-null`
 
@@ -101,31 +101,33 @@ catch (DbUpdateException ex)
 
 ```csharp
 // Bad — flagged
-var user = _repo.Find(id);   // may return null
-return user.Email;            // possible NullReferenceException
+User? user = _repo.Find(id);   // may return null
+return Ok(user.Email);         // possible NullReferenceException
 
 // Good — guard and return early (consistent with §1.37)
-var user = _repo.Find(id);
+User? user = _repo.Find(id);
 if (user is null)
 {
     return NotFound();
 }
 
-return user.Email;
+return Ok(user.Email);
 ```
 
 Other acceptable patterns: null-conditional with a fallback (`user?.Email ?? string.Empty`), or `ArgumentNullException.ThrowIfNull(user)` at a boundary.
 
-> Known false positives: the analysis is largely intra-procedural and can misfire when a value is guarded by a separate `HasValue` check or captured in a LINQ lambda with deferred execution. Confirm it is genuinely safe before suppressing — only then record it in `GlobalSuppressions.cs` with the rule ID, reason, and reviewer initials.
+> Known false positives: the analysis mostly checks one method at a time. It can misfire when a separate `HasValue` check guards the value, or when the value is used in a LINQ lambda that runs later. Confirm the code is safe before you dismiss the alert (§2.5).
 
 ## 2.5 Suppression policy
 
-Suppress only a verified false positive or a deliberate design decision. Use a justified `SuppressMessage` in `GlobalSuppressions.cs`:
+Suppress only a verified false positive or a deliberate design decision. Do it by dismissing the alert in GitHub:
 
-```csharp
-[assembly: SuppressMessage(
-    "CodeQL", "cs/catch-of-all-exceptions",
-    Justification = "Top-level background loop must not crash the host; logs and continues. Reviewed RT 2026-06-17.",
-    Scope = "member",
-    Target = "~M:MyApp.Workers.NotificationWorker.ExecuteAsync(System.Threading.CancellationToken)")]
-```
+1. Open the alert in the repository's **Security → Code scanning** tab.
+2. Choose **Dismiss alert** and pick the reason: **False positive** or **Won't fix** (for a deliberate design decision).
+3. In the comment, write the justification and the reviewer's initials and date.
+
+Example comment:
+
+> Top-level background loop must not crash the host; logs and continues. Reviewed RT 2026-06-17.
+
+Do not use `[SuppressMessage]` in `GlobalSuppressions.cs` for CodeQL alerts. That attribute is read by .NET analyzers, not by GitHub Code Scanning.
