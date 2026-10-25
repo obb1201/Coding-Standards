@@ -16,7 +16,9 @@ This repository holds coding standards for different programming languages. It i
 
 Each language has its own folder, such as `C# Coding Standard/`. A folder uses the Claude skill format: `SKILL.md`, which holds the frontmatter and the write/review workflow, plus `references/*.md` with the full numbered rules. Rules are cited by number (`§1.N`) or CodeQL rule ID, so renumbering a rule breaks citations in past reviews.
 
-`C# Coding Standard/` is a copy of the synced `csharp-code-reviewer` skill. An edit here does not reach the live skill until it is uploaded again on claude.ai.
+`C# Coding Standard/` is a copy of the synced `csharp-code-reviewer` skill. `JavaScript Coding Standard/` replaces the synced `javascript-code-reviewer` skill (same skill name). An edit here does not reach the live skill until it is uploaded again on claude.ai.
+
+In `JavaScript Coding Standard/`, `references/core-rules.md` (§1–§24) holds the base rules and `references/team-rules.md` (§25 and up) holds the team's additions. A core rule wins over a team rule. Outdated core rules are marked **Retired** instead of deleted, so their numbers stay stable. Never name the outside guide the core rules came from, in any file.
 
 ## Syncing skills to claude.ai
 

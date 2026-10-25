@@ -4,6 +4,23 @@ Notable changes to this repository, newest first.
 
 ## 2026-10-25
 
+- Added `JavaScript Coding Standard/`, which replaces the `javascript-code-reviewer` skill (same name). The old
+  skill's `§1`–`§15` numbers no longer apply, so citations in past reviews will not match.
+  - `references/core-rules.md`: the base rules, §1.1–§24.1, rewritten in our own words with new examples.
+  - `references/team-rules.md`: team rules §25–§32. They cover modern syntax, errors, async, performance,
+    security, testing, ESLint/Prettier settings and general principles. Most come from the old skill.
+  - Team decisions: a core rule wins over a team rule. Use 5 parameters at most (§7.6), single quotes (§6.1),
+    4-space indent (§16.1), one return at the end except guard clauses (§7.11–§7.12), a default export for
+    single-export modules (§10.3), and `item => ...` for single-parameter arrows (§8.2). `can` is added to the
+    boolean prefixes (§19.2).
+  - Retired core rules (numbers kept): §3.2 reserved-word keys, §11.2 generators, §11.1 → §25.3 (loops),
+    §13.2 → §25.2 (no `== null`), §19.6 → §25.1 (`#` private fields). §6.3 was never assigned.
+  - Security rules stay in this skill (§29) and match the `security-reviewer` skill. §29.5 (SRI for CDN scripts)
+    covers the CDN exception in §10.5.
+  - Fixed problems found in the old skill. Its examples used brace-less `if`s that its own ESLint config banned.
+    It listed server-side rules (SQL, Zod) in a browser skill, and its export rule contradicted itself.
+- Added the JavaScript standard to the `README.md` table and the `CLAUDE.md` layout notes.
+
 - Added `scripts/package-skills.ps1`. It builds an upload-ready zip for each skill folder in `dist/` (ignored by git). Documented the sync steps in `README.md` and `CLAUDE.md`.
 - Fixed a typo ("follow it.g") at the end of the `SKILL.md` description.
 

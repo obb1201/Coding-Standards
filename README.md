@@ -7,6 +7,7 @@ The team's coding standards, one set per programming language.
 | Language | Standard |
 | --- | --- |
 | C# | [C# Coding Standard](C%23%20Coding%20Standard/SKILL.md) |
+| JavaScript (browser, jQuery) | [JavaScript Coding Standard](JavaScript%20Coding%20Standard/SKILL.md) |
 
 Add a row here when you add a new language standard.
 
